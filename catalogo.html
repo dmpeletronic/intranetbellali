@@ -2,12 +2,12 @@
   <head>
     <meta charset="utf-8">
     <script type="text/javascript" src="js/tabletop/src/tabletop.js"></script>
-    <link rel="stylesheet" type="text/css" href="css/sss.css">
+    <link rel="stylesheet" href="css/sss.css">
     <script type="text/javascript">
       window.onload = function() { init() };
       var html;
       var public_spreadsheet_url = 'https://docs.google.com/spreadsheets/d/1XQhBPx-YLj9Dtr9J1Hh_E3J0_J7x03CZkajdOhSeinY/pubhtml';
-
+      document.write("<h1><center> Catalogo de produtos <center></h1> <h6>Carregando informações de: <a target='_new' href='" + public_spreadsheet_url + "'>" + public_spreadsheet_url + "</a></h6>");   
       function init() {
         Tabletop.init( { key: public_spreadsheet_url,
                          callback: showInfo,
@@ -16,30 +16,41 @@
 
       function showInfo(data) {
 	//document.writeln("Fornecedores: <br>");
-	html = "Fornecedores <br>";
-	var i;
+	var fornecedoreslist = document.getElementById('fornecedores'); 
 	for(var i=0; i< data.Fornecedores.elements.length; i++) {
 	  //document.writeln("Nome: "+ data.Fornecedores.elements[i].Nome + "<br>");
-          html += "Nome: "+ data.Fornecedores.elements[i].Nome + "<br>";
+          //html += "Nome: "+ data.Fornecedores.elements[i].Nome + "<br>";
+          var opt = document.createElement('option');
+          opt.value = data.Fornecedores.elements[i].Nome;
+          fornecedoreslist.appendChild(opt);
         }
 
-	html += "Produtos: <br>";
+	html = "<h3>Grade de Produtos:</h3>";
 	for(var i=0; i< data.Produtos.elements.length; i++) {
-	  //document.writeln("<img src='"+ data.Produtos.elements[i].CaminhoImagem + "' width='100' alt='"+i+"'>");
-          html += "<img src='"+ data.Produtos.elements[i].CaminhoImagem + "' width='250' height='200' alt='"+data.Produtos.elements[i].Codigo+"' title='"+data.Produtos.elements[i].Codigo+"'>";
+              var div = "<div class='produto'>";
+              var _div = "</div>";
+              var link = "<a href="+data.Produtos.elements[i].CaminhoImagem+" target=blank>"; 
+              var _link = "</a>";
+              var img = "<img src='"+ data.Produtos.elements[i].CaminhoImagem + "' width='320' height='240' alt='"+data.Produtos.elements[i].Codigo+"' title='"+data.Produtos.elements[i].Codigo+" Saldo:"+data.Produtos.elements[i].SaldoEstoque+"'>";
+              html += div + link + img + _link + _div;
         }
-	
-        // data comes through as a simple array since simpleSheet is turned on
-        //document.getElementById("data").innerHTML = JSON.stringify(data);
-        //console.log(data);
-        document.write(html);
+	document.getElementById('estoque').innerHTML = html;
       }
 
-      document.write("Carregando catalogo localizado em: <a target='_new' href='" + public_spreadsheet_url + "'>" + public_spreadsheet_url + "</a>");        
+     
     </script>
   </head>
   <body>
-  <h1> <center> CATALOGO DE PRODUTOS... Carregando </center> </h1>
+   <div id="filtro"> Filtrar por fornecedor:
+  <form name="filtrofornecedores" action="" method="GET">
+  <input list="fornecedores" name="fornecedor">
+    <datalist id="fornecedores">
+      <option value="Todos">
+    </datalist>
+  <input type="submit" value="Filtrar" onClick="">
+  </form>
+   </div>
 
+   <div id="estoque"> Carregando... </div>
   </body>
 </html>
