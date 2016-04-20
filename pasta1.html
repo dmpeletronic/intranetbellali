@@ -1,0 +1,73 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <script type="text/javascript" src="js/tabletop/src/tabletop.js"></script>
+    <link rel="stylesheet" href="css/sss.css">
+    <script type="text/javascript">
+      window.onload = function() { init() };
+      var html;
+      var public_spreadsheet_url = 'https://docs.google.com/spreadsheets/d/1XQhBPx-YLj9Dtr9J1Hh_E3J0_J7x03CZkajdOhSeinY/pubhtml';
+      document.write("<h1><center> Pasta 1<center></h1> <h6>Carregando informações de: <a target='_new' href='" + public_spreadsheet_url + "'>" + public_spreadsheet_url + "</a></h6>");   
+      function init() {
+        Tabletop.init( { key: public_spreadsheet_url,
+                         callback: showInfo,
+                         simpleSheet: false } );
+      }
+
+   function converteMoedaFloat(valor){
+      
+      if(valor === ""){
+         valor =  0;
+      }else{
+         valor = valor.replace("R","");
+         valor = valor.replace("$","");
+         valor = valor.replace(".","");
+         valor = valor.replace(",",".");
+         valor = parseFloat(valor);
+      }
+      return valor;
+
+   }
+
+      function showInfo(data) {
+
+
+	html = "<h3>Pasta 1:</h3>";
+        var total_elementos=0;
+        var total_valor = 0;
+	for(var i=0; i< data.PastasConsignadas.elements.length; i++) {
+              var div = "<div class='produto'>";
+              var _div = "</div>";
+              var j=0;
+              for(j=0; j<data.Produtos.elements.length; j++) {
+                if(data.PastasConsignadas.elements[i].ModeloP1==data.Produtos.elements[j].Codigo) {
+                  break;
+                } 
+              }
+              if(j>=data.Produtos.elements.length) {
+                continue;
+              }
+              var link = "<a href="+data.Produtos.elements[j].CaminhoImagem+" target=blank>"; 
+              var _link = "</a>";
+              var img = "<img src='"+ data.Produtos.elements[j].CaminhoImagem + "' width='320' height='240' alt='"+data.Produtos.elements[j].Codigo+"' title='"+data.Produtos.elements[j].Codigo+" Saldo:"+data.Produtos.elements[j].SaldoEstoque+" Preço:"+data.Produtos.elements[j].PrecoVenda+"'>";
+              html += div + link + img + _link + _div;
+              total_elementos += parseInt(data.PastasConsignadas.elements[i].QuantidadeP1);
+              var valor = converteMoedaFloat(data.Produtos.elements[j].PrecoVenda);
+              total_valor += (valor)*parseInt(data.PastasConsignadas.elements[i].QuantidadeP1);                         
+
+        }
+	document.getElementById('vendas').innerHTML = html;
+	document.getElementById('TotalElementos').innerHTML = "Encontrados "+total_elementos+" itens na pasta 1";
+	document.getElementById('TotalValor').innerHTML = "Somados R$"+total_valor+" na pasta 1";
+      }
+
+     
+    </script>
+  </head>
+  <body>
+  
+   <div id="TotalElementos"> </div>
+   <div id="TotalValor"> </div>
+   <div id="vendas"> Carregando... </div>
+  </body>
+</html>

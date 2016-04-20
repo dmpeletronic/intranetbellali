@@ -1,0 +1,47 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <script type="text/javascript" src="js/tabletop/src/tabletop.js"></script>
+    <link rel="stylesheet" href="css/sss.css">
+    <script type="text/javascript">
+      window.onload = function() { init() };
+      var html;
+      var public_spreadsheet_url = 'https://docs.google.com/spreadsheets/d/1XQhBPx-YLj9Dtr9J1Hh_E3J0_J7x03CZkajdOhSeinY/pubhtml';
+      document.write("<h1><center> Vendas realizadas <center></h1> <h6>Carregando informações de: <a target='_new' href='" + public_spreadsheet_url + "'>" + public_spreadsheet_url + "</a></h6>");   
+      function init() {
+        Tabletop.init( { key: public_spreadsheet_url,
+                         callback: showInfo,
+                         simpleSheet: false } );
+      }
+
+      function showInfo(data) {
+
+
+	html = "<h3>Vendas Realizadas:</h3>";
+	for(var i=0; i< data.Vendas.elements.length; i++) {
+              var div = "<div class='produto'>";
+              var _div = "</div>";
+              var j=0;
+              for(j=0; j<data.Produtos.elements.length; j++) {
+                if(data.Vendas.elements[i].CodigoProduto==data.Produtos.elements[j].Codigo) {
+                  break;
+                } 
+              }
+              var link = "<a href="+data.Produtos.elements[j].CaminhoImagem+" target=blank>"; 
+              var _link = "</a>";
+              var img = "<img src='"+ data.Produtos.elements[j].CaminhoImagem + "' width='320' height='240' alt='"+data.Produtos.elements[j].Codigo+"' title='"+data.Produtos.elements[j].Codigo+" Saldo:"+data.Produtos.elements[j].SaldoEstoque+" Preço:"+data.Vendas.elements[i].ValorVenda+"'>";
+              html += div + link + img + _link + _div;
+
+        }
+	document.getElementById('vendas').innerHTML = html;
+      }
+
+     
+    </script>
+  </head>
+  <body>
+  
+
+   <div id="vendas"> Carregando... </div>
+  </body>
+</html>
