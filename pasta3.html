@@ -2,6 +2,7 @@
   <head>
     <meta charset="utf-8">
     <script type="text/javascript" src="js/tabletop/src/tabletop.js"></script>
+    <script type="text/javascript" src="js/common.js"></script>      
     <link rel="stylesheet" href="css/sss.css">
     <script type="text/javascript">
       window.onload = function() { init() };
@@ -47,10 +48,7 @@
               if(j>=data.Produtos.elements.length) {
                 continue;
               }
-              var link = "<a href="+data.Produtos.elements[j].CaminhoImagem+" target=blank>"; 
-              var _link = "</a>";
-              var img = "<img src='"+ data.Produtos.elements[j].CaminhoImagem + "' width='320' height='240' alt='"+data.Produtos.elements[j].Codigo+"' title='"+data.Produtos.elements[j].Codigo+" Saldo:"+data.Produtos.elements[j].SaldoEstoque+" Preço:"+data.Produtos.elements[j].PrecoVenda+"'>";
-              html += div + link + img + _link + _div;
+              html += boxProduto(data.Produtos.elements[j]);
               total_elementos += parseInt(data.PastasConsignadas.elements[i].QuantidadeP3);
               var valor = converteMoedaFloat(data.Produtos.elements[j].PrecoVenda);
               total_valor += (valor)*parseInt(data.PastasConsignadas.elements[i].QuantidadeP3);                         
