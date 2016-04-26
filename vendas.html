@@ -5,19 +5,19 @@
     <script type="text/javascript" src="js/common.js"></script>  
     <link rel="stylesheet" href="css/sss.css">
     <script type="text/javascript">
-      window.onload = function() { init() };
-      var html;
-      var public_spreadsheet_url = 'https://docs.google.com/spreadsheets/d/1XQhBPx-YLj9Dtr9J1Hh_E3J0_J7x03CZkajdOhSeinY/pubhtml';
-      document.write("<h1><center> Vendas realizadas <center></h1> <h6>Carregando informações de: <a target='_new' href='" + public_spreadsheet_url + "'>" + public_spreadsheet_url + "</a></h6>");   
+      window.onload = function() { 
+        init();
+        document.getElementById("dblink").href = getDBLink();
+      };
+   
       function init() {
-        Tabletop.init( { key: public_spreadsheet_url,
+        Tabletop.init( { key: getDBLink(),
                          callback: showInfo,
                          simpleSheet: false } );
       }
 
       function showInfo(data) {
-
-
+      var html;
 	html = "<h3>Vendas Realizadas:</h3>";
 	for(var i=0; i< data.Vendas.elements.length; i++) {
               var div = "<div class='produto'>";
@@ -31,15 +31,20 @@
             html += boxProduto(data.Produtos.elements[j]);
 
         }
-	document.getElementById('vendas').innerHTML = html;
+	    document.getElementById('vendas').innerHTML = html;
       }
 
      
     </script>
   </head>
-  <body>
-  
-
-   <div id="vendas"> Carregando... </div>
+ <body class="index">
+    <div class="container">
+      <div class="pageTitle"> 
+        <div class="back"> <a href="index.html"> <p> Voltar </p> </a> </div>
+        <div class="print"> <a href="javascript:window.print()" > <img src="images/printer.png"> </a> </div>
+        <div class="title"> <center> <h1>  Vendas </h1> </center> </div>
+      </div>
+      <p> <h6> <a id="dblink" href="#" target='_new'> Visualizar banco de dados </a></h6></p>
+      <div id="vendas"> Carregando... </div>
   </body>
 </html>

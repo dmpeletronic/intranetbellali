@@ -5,35 +5,20 @@
     <script type="text/javascript" src="js/common.js"></script>      
     <link rel="stylesheet" href="css/sss.css">
     <script type="text/javascript">
-      window.onload = function() { init() };
-      var html;
-      var public_spreadsheet_url = 'https://docs.google.com/spreadsheets/d/1XQhBPx-YLj9Dtr9J1Hh_E3J0_J7x03CZkajdOhSeinY/pubhtml';
-      document.write("<h1><center> Pasta 3<center></h1> <h6>Carregando informações de: <a target='_new' href='" + public_spreadsheet_url + "'>" + public_spreadsheet_url + "</a></h6>");   
-      function init() {
-        Tabletop.init( { key: public_spreadsheet_url,
+      window.onload = function() {  
+        init();
+        document.getElementById("dblink").href = getDBLink();
+       };
+
+     function init() {
+        Tabletop.init( { key: getDBLink(),
                          callback: showInfo,
                          simpleSheet: false } );
       }
 
-   function converteMoedaFloat(valor){
-      
-      if(valor === ""){
-         valor =  0;
-      }else{
-         valor = valor.replace("R","");
-         valor = valor.replace("$","");
-         valor = valor.replace(".","");
-         valor = valor.replace(",",".");
-         valor = parseFloat(valor);
-      }
-      return valor;
-
-   }
-
       function showInfo(data) {
-
-
-	html = "<h3>Pasta 3:</h3>";
+      var html;
+	   html = "<h3>Pasta 3:</h3>";
         var total_elementos=0;
         var total_valor = 0;
 	for(var i=0; i< data.PastasConsignadas.elements.length; i++) {
@@ -62,10 +47,18 @@
      
     </script>
   </head>
-  <body>
+<body class="index">
+    <div class="container">
+      <div class="pageTitle"> 
+        <div class="back"> <a href="index.html"> <p> Voltar </p> </a> </div>
+        <div class="print"> <a href="javascript:window.print()" > <img src="images/printer.png"> </a> </div>
+        <div class="title"> <center> <h1>  Pasta 3 </h1> </center> </div>
+      </div>
+      <p> <h6> <a id="dblink" href="#" target='_new'> Visualizar banco de dados </a></h6></p>
   
    <div id="TotalElementos"> </div>
    <div id="TotalValor"> </div>
    <div id="vendas"> Carregando... </div>
+</div>
   </body>
 </html>

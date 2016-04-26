@@ -1,31 +1,171 @@
 /* General */
 
 body {margin: 0px auto;}
+
+
 a {color: #333;}
 input:focus {outline: none;}
-
-/* Table */
-
-table {text-align: left; width: 100%}
-th {padding: 10px 0px;}
-td, text {padding: 3px 20px 3px 0px; font-size: 14px;}
-.noMatches {margin-left: 20px; font-size: 11px; font-style: italic; visibility: hidden;}
 
 /* Produto */
 div.produto {
   float: left;
   position: relative;
+  width: 500px;
+  height: 250px;
+  padding: 10px 10px 10px 10px;
 }
 
-/* Line Chart */
+.col2 {
+  white-space: nowrap;
+  max-width: 60px;
+}
 
-.axis {shape-rendering: crispEdges;}
-.x.axis .minor, .y.axis .minor {stroke-opacity: .5;}
-.x.axis {stroke-opacity: 1;}
-.y.axis line, .y.axis path {fill: none; stroke: #acacac; stroke-width: 1;}
-.bigg {-webkit-transition: all .2s ease-in-out; -webkit-transform: scale(2);}
-path.chartLine {stroke: #333; stroke-width: 3; fill: none;}
-div.tooltip {position: absolute; text-align: left; padding: 4px 8px; width: auto; font-size: 10px; height: auto; background: #fff; border: 0px; pointer-events: none;}
-circle {fill: #e6e6e6;}
+.col3 {
 
-@media only screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 320px) and (max-width: 1024px) {}
+}
+
+.container {
+  max-width: 1400px; 
+  margin: 0 auto; 
+  overflow: hidden;
+}
+
+/* Index.html */
+.logo {
+  width: 200px; 
+  margin-left:auto; 
+  margin-right: auto;
+}
+.logo img {
+  padding-bottom: 50px;
+}
+
+.tabela {
+  width: 75%;
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.celula {
+  float: left;
+  position: relative;
+  width: 120px;
+  border: 0;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+.celula img {
+  margin: 0 auto;
+  display: block;
+  width: 100px;
+}
+
+.back {
+  float: left;
+}
+
+.print {
+  float: right;
+  width: 75px;
+}
+/* Titles */
+h1, h2, h3, h4, h5, h6 {
+  font-family: Source Sans Pro, Arial, sans-serif;
+}
+h1 {
+  font-size: 36px;
+}
+h2 {
+  margin-top: 40px;
+}
+h3 {
+  padding-top: 18px;
+}
+
+body {
+  font-family: 'Source Sans Pro'; 
+  font-size: 18px; 
+  background: #fff; 
+  color: #535353;  
+  border: 10px gold solid; 
+  margin: 0px; 
+  padding: 20px 20px 100px 20px; 
+  overflow: auto; 
+}
+
+/* Table */
+table {
+  text-align: left;
+  border-spacing: 0;
+}
+th {padding: 10px 0px;}
+td, text {padding: 3px 20px 3px 0px; font-size: 14px;}
+.noMatches {margin-left: 20px; font-size: 11px; font-style: italic; visibility: hidden;}
+
+tbody tr:nth-child(odd) {background-color: #f3f3f3;}
+thead {text-align: left; font-family: Source Sans Pro, Arial, sans-serif;}
+td {min-width: 140px; vertical-align: top; padding: 4px;}
+td a {line-height: 24px;}
+tr {height: 50px;}
+ul, ol {text-indent: 0; margin: 0; padding-left: 20px;}
+ul li {padding-bottom: 6px; line-height: 22px;}
+
+footer {padding-top: 20px; margin-top: 60px; border-top: 4px solid #CCF4FF;  -webkit-column-count: 6; column-count: 6; -webkit-column-gap: 20px; column-gap: 20px; -moz-column-count: 6; -moz-column-gap: 20px; height: 125px;}
+footer ul {list-style: none; padding-left: 0px; font-family: Source Sans Pro, Baskerville, Georgia, serif;}
+footer li {line-height: inherit; font-size: 12px;}
+footer h4 {font-size: 14px; -webkit-column-break-before: always; break-before: always; -moz-column-break-before: always; }
+footer h4 {margin-top: 0px;}
+footer a {border: none;}
+
+.half {max-width: 50%; display: inline-block; vertical-align: top;}
+.half:nth-child(odd) {padding-left: 20px;}
+
+img {width: 100%;}
+hr {border: 2px solid #CCF4FF;}
+
+p a, a {
+  color: #535353; 
+  text-decoration: none; 
+  padding-bottom: 0px; 
+}
+a:hover {
+  color: gold;
+}
+a:active {
+  color: goldenrod;
+}
+small {
+  padding: 10px 0px;
+}
+p, ol {
+  line-height: 1.4;
+}
+text {
+  font-size: 12px;
+}
+
+body.index p:nth-of-type(2) {font-size: 30px;}
+body.index table {
+  border: 4px solid goldenrod; 
+}
+.home-link {
+  color: #47CCFC;
+}
+
+pre {word-wrap: break-word; padding: 10px; background: #F8F8F8;}
+pre code {padding: 0;}
+code {font-family: "Source Code Pro", monospace; font-size: 14px; line-height: 1; background: #F8F8F8; color: #636363; font-weight: 400; padding: 2px 6px; border-radius: 2px;}
+.hljs { background: #F8F8F8; color: #494949; line-height: 1.4em; }
+
+/* funsies */
+::selection {background: #44FFB4;}
+::-moz-selection {background: #44FFB4;}
+
+/* Table */
+.ssExample table {min-width: 600px;}
+.tHeader::after {content: " \2193 \2191 "; font-size: 10px; padding-left: 3px; cursor: pointer;}
+
+/* Map Popup Style */
+.leaflet-popup-content h2 {margin-bottom: 4px; margin-top: auto;}
