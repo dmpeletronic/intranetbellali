@@ -1,0 +1,86 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <script type="text/javascript" src="js/tabletop/src/tabletop.js"></script>
+    <script type="text/javascript" src="js/common.js"></script>      
+    <link rel="stylesheet" href="css/sss.css">
+    <script type="text/javascript">
+      window.onload = function() {  
+        init();
+        document.getElementById("dblink").href = getDBLink();
+      };
+
+      function init() {
+        Tabletop.init( { key: getDBLink(),
+                         callback: showInfo,
+                         simpleSheet: false } );
+      }
+
+      function showInfo(data) {
+      var html;
+      html = "<h3>Sem pasta:</h3>";
+        var total_elementos=0;
+        var total_valor = 0;
+	for(var i=0; i< data.Produtos.elements.length; i++) {
+              var div = "<div class='produto'>";
+              var _div = "</div>";
+              var j=0;
+              for(j=0; j<data.PastasConsignadas.elements.length; j++) {
+                if(data.Produtos.elements[i].Codigo==data.PastasConsignadas.elements[j].ModeloP1) {
+                  data.Produtos.elements[i].SaldoEstoque -= data.PastasConsignadas.elements[j].QuantidadeP1;
+                } 
+                if(data.Produtos.elements[i].Codigo==data.PastasConsignadas.elements[j].ModeloP2) {
+                  data.Produtos.elements[i].SaldoEstoque -= data.PastasConsignadas.elements[j].QuantidadeP2;
+                } 
+                if(data.Produtos.elements[i].Codigo==data.PastasConsignadas.elements[j].ModeloP3) {
+                  data.Produtos.elements[i].SaldoEstoque -= data.PastasConsignadas.elements[j].QuantidadeP3;
+                } 
+                if(data.Produtos.elements[i].Codigo==data.PastasConsignadas.elements[j].ModeloP4) {
+                  data.Produtos.elements[i].SaldoEstoque -= data.PastasConsignadas.elements[j].QuantidadeP4;
+                } 
+                if(data.Produtos.elements[i].Codigo==data.PastasConsignadas.elements[j].ModeloP5) {
+                  data.Produtos.elements[i].SaldoEstoque -= data.PastasConsignadas.elements[j].QuantidadeP5;
+                } 
+                if(data.Produtos.elements[i].Codigo==data.PastasConsignadas.elements[j].ModeloP6) {
+                  data.Produtos.elements[i].SaldoEstoque -= data.PastasConsignadas.elements[j].QuantidadeP6;
+                } 
+              }
+              for(j=0; j<data.RetornoGarantia.elements.length; j++) {
+                if(data.Produtos.elements[i].Codigo==data.RetornoGarantia.elements[j].Codigo) {
+                  data.Produtos.elements[i].SaldoEstoque--;
+                } 
+              }
+              if(data.Produtos.elements[i].SaldoEstoque < 1) {
+                continue;
+              }
+              
+              html += boxProduto(data.Produtos.elements[i]);
+              total_elementos += parseInt(data.Produtos.elements[i].SaldoEstoque);
+              var valor = converteMoedaFloat(data.Produtos.elements[i].PrecoVenda);
+              total_valor += (valor)*parseInt(data.Produtos.elements[i].SaldoEstoque);                         
+
+        }
+	document.getElementById('vendas').innerHTML = html;
+	document.getElementById('TotalElementos').innerHTML = "Encontrados "+total_elementos+" itens sem pasta";
+	document.getElementById('TotalValor').innerHTML = "Somados R$"+total_valor+" para venda";
+      }
+
+     
+    </script>
+  </head>
+ <body class="index">
+    <div class="container">
+      <div class="pageTitle"> 
+        <div class="back"> <a href="index.html"> <p> Voltar </p> </a> </div>
+        <div class="print"> <a href="javascript:window.print()" > <img src="images/printer.png"> </a> </div>
+        <div class="title"> <center> <h1>  Sem pasta </h1> </center> </div>
+      </div>
+        
+      <h6> <a id="dblink" href="#" target='_new'> Visualizar banco de dados </a></h6>
+  
+   <div id="TotalElementos"> </div>
+   <div id="TotalValor"> </div>
+   <div id="vendas"> Carregando... </div>
+</div>
+  </body>
+</html>
