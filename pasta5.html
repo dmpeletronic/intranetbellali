@@ -33,6 +33,7 @@
               if(j>=data.Produtos.elements.length) {
                 continue;
               }
+              data.Produtos.elements[j].SaldoEstoque = data.PastasConsignadas.elements[i].QuantidadeP5;
               html += boxProduto(data.Produtos.elements[j]);
               total_elementos += parseInt(data.PastasConsignadas.elements[i].QuantidadeP5);
               var valor = converteMoedaFloat(data.Produtos.elements[j].PrecoVenda);
