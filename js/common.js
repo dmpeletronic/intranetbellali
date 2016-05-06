@@ -63,7 +63,7 @@ var boxProduto = function(elements) {
             col + elements.PrecoVenda + _col +
             _row+
             row+
-            col2 + "Quantidade:" + _col +
+            col2 + "Qtde:" + _col +
             col + elements.SaldoEstoque + _col +
             _row+
             row+
