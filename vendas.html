@@ -17,21 +17,24 @@
       }
 
       function showInfo(data) {
+      var total_elementos=0;
+      var total_valor = 0;
       var html;
-	html = "<h3>Vendas Realizadas:</h3>";
-	for(var i=0; i< data.Vendas.elements.length; i++) {
-              var div = "<div class='produto'>";
-              var _div = "</div>";
-              var j=0;
-              for(j=0; j<data.Produtos.elements.length; j++) {
-                if(data.Vendas.elements[i].CodigoProduto==data.Produtos.elements[j].Codigo) {
-                  break;
-                } 
-              }
-            html += boxProduto(data.Produtos.elements[j]);
-
+	  html = "<h3>Vendas Realizadas:</h3>";
+	  for(var i=0; i< data.Vendas.elements.length; i++) {
+            var produto = buscaProduto(data.Produtos, data.Vendas.elements[i].CodigoProduto);
+            if (produto==null) {
+              continue;
+            }
+            html += boxProduto(produto);
+            
+            total_elementos += parseInt(data.Vendas.elements[i].Quantidade);
+            var valor = converteMoedaFloat(data.Vendas.elements[i].ValorTotal);
+            total_valor += valor;
         }
 	    document.getElementById('vendas').innerHTML = html;
+        document.getElementById('TotalElementos').innerHTML = "Encontrados "+total_elementos+" itens nas vendas";
+	    document.getElementById('TotalValor').innerHTML = "Somados R$"+total_valor+" em vendas";
       }
 
      
@@ -45,6 +48,8 @@
         <div class="title"> <center> <h1>  Vendas </h1> </center> </div>
       </div>
       <p> <h6> <a id="dblink" href="#" target='_new'> Visualizar banco de dados </a></h6></p>
+      <div id="TotalElementos"> </div>
+      <div id="TotalValor"> </div>
       <div id="vendas"> Carregando... </div>
   </body>
 </html>

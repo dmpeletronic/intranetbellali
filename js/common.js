@@ -21,6 +21,19 @@ function converteMoedaFloat(valor){
   return valor;
 }
 
+var buscaProduto = function (data, codigo) {
+  var i;
+  for(i=0; i<data.elements.length; i++) {
+    if(codigo==data.elements[i].Codigo) {
+    break;
+    } 
+  }
+  if(i==data.elements.length) {
+    return null;
+  } 
+  return data.elements[i];
+}
+
 var boxProdutoSimples = function(elements) {
     var div = "<div class='produto' style='width:320;'>";
     var _div = "</div>";

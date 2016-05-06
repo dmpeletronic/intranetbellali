@@ -21,25 +21,16 @@
         var total_elementos=0;
         var total_valor = 0;
 	for(var i=0; i< data.PastasConsignadas.elements.length; i++) {
-              var div = "<div class='produto'>";
-              var _div = "</div>";
-              var j=0;
-              for(j=0; j<data.Produtos.elements.length; j++) {
-                if(data.PastasConsignadas.elements[i].ModeloP2==data.Produtos.elements[j].Codigo) {
-                  break;
-                } 
-              }
-              if(j>=data.Produtos.elements.length) {
-                continue;
-              }
-              data.Produtos.elements[j].SaldoEstoque = data.PastasConsignadas.elements[i].QuantidadeP2;
-              html += boxProduto(data.Produtos.elements[j]);
-              total_elementos += parseInt(data.PastasConsignadas.elements[i].QuantidadeP2);
-
-              var valor = converteMoedaFloat(data.Produtos.elements[j].PrecoVenda);
-              total_valor += (valor)*parseInt(data.PastasConsignadas.elements[i].QuantidadeP2);                         
-
-        }
+            var produto = buscaProduto(data.Produtos, data.PastasConsignadas.elements[i].ModeloP2);
+            if (produto==null) {
+              continue;
+            }
+            produto.SaldoEstoque =  data.PastasConsignadas.elements[i].QuantidadeP2;
+            html += boxProduto(produto);
+            total_elementos += parseInt(data.PastasConsignadas.elements[i].QuantidadeP2);
+            var valor = converteMoedaFloat(produto.PrecoVenda);
+            total_valor += (valor)*parseInt(data.PastasConsignadas.elements[i].QuantidadeP2);
+          }
 	document.getElementById('vendas').innerHTML = html;
 	document.getElementById('TotalElementos').innerHTML = "Encontrados "+total_elementos+" itens na pasta 2";
 	document.getElementById('TotalValor').innerHTML = "Somados R$"+total_valor+" na pasta 2";
