@@ -6,7 +6,7 @@
 var getDBLink = function () {
     var public_spreadsheet_url = 'https://docs.google.com/spreadsheets/d/1XQhBPx-YLj9Dtr9J1Hh_E3J0_J7x03CZkajdOhSeinY/pubhtml';
     return public_spreadsheet_url;
-}
+};
 
 function converteMoedaFloat(valor){ 
   if(valor === ""){
@@ -19,7 +19,7 @@ function converteMoedaFloat(valor){
     valor = parseFloat(valor);
   }
   return valor;
-}
+};
 
 var buscaProduto = function (data, codigo) {
   var i;
@@ -32,7 +32,7 @@ var buscaProduto = function (data, codigo) {
     return null;
   } 
   return data.elements[i];
-}
+};
 
 var boxProdutoSimples = function(elements) {
     var div = "<div class='produto' style='width:320;'>";
@@ -46,7 +46,7 @@ var boxProdutoSimples = function(elements) {
             " Preco:"+elements.PrecoVenda+"'>";
     var html = div + link + img + _link + _div;
     return html;
-}
+};
 var boxProduto = function(elements) {
     var div = "<div class='produto'>";
     var _div = "</div>";
@@ -85,7 +85,46 @@ var boxProduto = function(elements) {
             _row +
             _table + _div;
     return html;    
-}
+};
 
+var totalVendas = function (data) {
+  var total_valor = 0;
+  for(var i=0; i< data.Vendas.elements.length; i++) {
+    var produto = buscaProduto(data.Produtos, data.Vendas.elements[i].CodigoProduto);
+     if (produto==null) {
+      continue;
+    }            
+    var valor = converteMoedaFloat(data.Vendas.elements[i].ValorTotal);
+    total_valor += valor;
+  }
+  return total_valor.toFixed(2);
+};
 
+var totalCustoMercadoriaVendida = function (data) {
+  var cmv = 0;
+  for(var i=0; i< data.Vendas.elements.length; i++) {
+     var produto = buscaProduto(data.Compras, data.Vendas.elements[i].CodigoProduto);
+     var qtde = parseInt(data.Vendas.elements[i].Quantidade);
+     cmv += qtde*converteMoedaFloat(produto.ValorPago);
+  }
+  return cmv.toFixed(2);
+};
 
+var totalEmEstoque = function (data) {
+  var total = 0;
+  for(var i=0; i < data.Produtos.elements.length; i++) {
+    var qtde = parseInt(data.Produtos.elements[i].SaldoEstoque);
+    var prc_unit = converteMoedaFloat(data.Produtos.elements[i].PrecoVenda);
+    total += qtde*prc_unit;
+  }
+  return total.toFixed(2);
+};
+
+totalComissoes = function (data) {
+  var total = 0;
+  for(var i=0; i< data.Vendas.elements.length; i++) {           
+    var valor = converteMoedaFloat(data.Vendas.elements[i].Comissao);
+    total += valor;
+  }
+  return total.toFixed(2);
+};

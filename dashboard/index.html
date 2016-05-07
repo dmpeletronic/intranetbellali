@@ -18,7 +18,6 @@
     <script type="text/javascript">
       window.onload = function() { 
         init();
-        document.getElementById("dblink").href = getDBLink();
       };
    
       function init() {
@@ -28,18 +27,16 @@
       }
 
       function showInfo(data) {
-      var total_elementos=0;
-      var total_valor = 0;
-	  for(var i=0; i< data.Vendas.elements.length; i++) {
-            var produto = buscaProduto(data.Produtos, data.Vendas.elements[i].CodigoProduto);
-            if (produto==null) {
-              continue;
-            }            
-            total_elementos += parseInt(data.Vendas.elements[i].Quantidade);
-            var valor = converteMoedaFloat(data.Vendas.elements[i].ValorTotal);
-            total_valor += valor;
-        }
+        var total_valor = totalVendas(data);
+        var total_estoque = totalEmEstoque(data);
+        var total_cmv = totalCustoMercadoriaVendida(data);
+        var total_comissoes = totalComissoes(data);
+        var lucro_bruto = totalVendas(data) - totalCustoMercadoriaVendida(data) - totalComissoes(data);
 	    document.getElementById('TotalVendas').innerHTML = "R$"+total_valor;
+        document.getElementById('TotalCmv').innerHTML = "R$"+total_cmv;
+        document.getElementById('TotalEstoque').innerHTML = "R$"+total_estoque;
+        document.getElementById('TotalComissoes').innerHTML = "R$"+total_comissoes;
+        document.getElementById('LucroBruto').innerHTML = "R$"+lucro_bruto;
       }
 
      
@@ -425,7 +422,6 @@
                     <div class="alert alert-info">
                         <i class="fa fa-folder-open "></i>
                         <b>&nbsp;Olá ! </b>Bem vindo de volta <b id="UserName"> Nome Usuario </b>
- <i class="fa  fa-pencil"></i><b>&nbsp;2,000 </b>Support Tickets Pending to Answere. nbsp;
                     </div>
                 </div>
                 <!--end  Welcome -->
@@ -435,25 +431,27 @@
             <div class="row">
                 <!--quick info section -->
                 <div class="col-lg-3">
-                    <div class="alert alert-danger text-center">
-                        <i class="fa fa-calendar fa-3x"></i>&nbsp;<b>20 </b>Meetings Sheduled This Month
-
-                    </div>
+                  <div class="alert alert-success text-center">
+                        <i class="fa  fa-money fa-3x"></i>&nbsp;<b id="TotalVendas"> R$0,00 </b>
+                        em vendas 
+                  </div>
                 </div>
                 <div class="col-lg-3">
-                    <div class="alert alert-success text-center">
-                        <i class="fa  fa-beer fa-3x"></i>&nbsp;<b>27 % </b>Profit Recorded in This Month  
-                    </div>
+                  <div class="alert alert-danger text-center">
+                        <i class="fa fa-money fa-3x"></i>&nbsp;<b id="TotalCmv"> R$0,00 </b>
+                        custo da mercadoria vendida
+                  </div>
                 </div>
                 <div class="col-lg-3">
                     <div class="alert alert-info text-center">
-                        <i class="fa fa-rss fa-3x"></i>&nbsp;<b>1,900</b> New Subscribers This Year
-
+                        <i class="fa fa-money fa-3x"></i>&nbsp;<b id="TotalComissoes"> R$0,00 </b>
+                        em comissões
                     </div>
                 </div>
                 <div class="col-lg-3">
                     <div class="alert alert-warning text-center">
-                        <i class="fa  fa-pencil fa-3x"></i>&nbsp;<b>2,000 $ </b>Payment Dues For Rejected Items
+                        <i class="fa fa-bar-chart-o fa-3x"></i>&nbsp;<b id="LucroBruto"> R$0,00 </b>
+                        lucro bruto
                     </div>
                 </div>
                 <!--end quick info section -->
@@ -583,43 +581,42 @@
 
                 <div class="col-lg-4">
                     <div class="panel panel-primary text-center no-boder">
-                        <div class="panel-body yellow">
-                            <i class="fa fa-bar-chart-o fa-3x"></i>
-                            <h4> Vendas Totais </h4>
-                            <h3 id="TotalVendas"> R$0,00 </h3>
+                                                <div class="panel-body green">
+                            <i class="fa fa fa-floppy-o fa-3x"></i>
+                            <h3 id="TotalEstoque"> R$0,00 </h3>
                         </div>
                         <div class="panel-footer">
-                            <span class="panel-eyecandy-title">Daily User Visits
+                            <span class="panel-eyecandy-title"> Estoque disponível para venda
                             </span>
                         </div>
                     </div>
                     <div class="panel panel-primary text-center no-boder">
                         <div class="panel-body blue">
                             <i class="fa fa-pencil-square-o fa-3x"></i>
-                            <h3>2,060 </h3>
+                            <h3 id="TotalCmv" > R$0,00 </h3>
                         </div>
                         <div class="panel-footer">
-                            <span class="panel-eyecandy-title">Pending Orders Found
+                            <span class="panel-eyecandy-title">A definir
                             </span>
                         </div>
                     </div>
                     <div class="panel panel-primary text-center no-boder">
-                        <div class="panel-body green">
-                            <i class="fa fa fa-floppy-o fa-3x"></i>
-                            <h3>20 GB</h3>
+                        <div class="panel-body yellow">
+                            <i class="fa fa-bar-chart-o fa-3x"></i>
+                            <h3 id="TotalVendas"> R$0,00 </h3>
                         </div>
                         <div class="panel-footer">
-                            <span class="panel-eyecandy-title">New Data Uploaded
+                            <span class="panel-eyecandy-title">A definir
                             </span>
                         </div>
                     </div>
                     <div class="panel panel-primary text-center no-boder">
                         <div class="panel-body red">
                             <i class="fa fa-thumbs-up fa-3x"></i>
-                            <h3>2,700 </h3>
+                            <h3>0 </h3>
                         </div>
                         <div class="panel-footer">
-                            <span class="panel-eyecandy-title">New User Registered
+                            <span class="panel-eyecandy-title"> A definir
                             </span>
                         </div>
                     </div>

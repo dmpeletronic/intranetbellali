@@ -32,13 +32,13 @@ limitations under the License.*/
  #wrapper {
     width: 100%;
     margin-top: 55px!important; 
-    background-color: black; //#04B173; 
+    background-color: black;
 }
 
 #page-wrapper {
     padding: 0 15px;
     min-height: 568px;
-     background-color: whitesmoke; //rgb(209, 212, 216);
+     background-color: whitesmoke;
 }
 
 
