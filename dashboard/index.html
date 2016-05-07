@@ -12,6 +12,38 @@
     <link href="assets/css/main-style.css" rel="stylesheet" />
     <!-- Page-Level CSS -->
     <link href="assets/plugins/morris/morris-0.4.3.min.css" rel="stylesheet" />
+    <!-- CORE TO GET DATA-->
+    <script type="text/javascript" src="../js/tabletop/src/tabletop.js"></script>
+    <script type="text/javascript" src="../js/common.js"></script>  
+    <script type="text/javascript">
+      window.onload = function() { 
+        init();
+        document.getElementById("dblink").href = getDBLink();
+      };
+   
+      function init() {
+        Tabletop.init( { key: getDBLink(),
+                         callback: showInfo,
+                         simpleSheet: false } );
+      }
+
+      function showInfo(data) {
+      var total_elementos=0;
+      var total_valor = 0;
+	  for(var i=0; i< data.Vendas.elements.length; i++) {
+            var produto = buscaProduto(data.Produtos, data.Vendas.elements[i].CodigoProduto);
+            if (produto==null) {
+              continue;
+            }            
+            total_elementos += parseInt(data.Vendas.elements[i].Quantidade);
+            var valor = converteMoedaFloat(data.Vendas.elements[i].ValorTotal);
+            total_valor += valor;
+        }
+	    document.getElementById('TotalVendas').innerHTML = "R$"+total_valor;
+      }
+
+     
+    </script>
    </head>
 <body>
     <!--  wrapper -->
@@ -26,7 +58,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">
+                <a class="navbar-brand" href="../index.html">
                     <img src="../images/circularlogo.png" alt="" />
                 </a>
             </div>
@@ -284,10 +316,10 @@
                         <!--end search section-->
                     </li>
                     <li class="selected">
-                        <a href="index.html"><i class="fa fa-dashboard fa-fw"></i>Dashboard</a>
+                        <a href="index.html"><i class="fa fa-dashboard fa-fw"></i>Dados rapidos</a>
                     </li>
                     <li>
-                        <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Charts<span class="fa arrow"></span></a>
+                        <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Graficos<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
                                 <a href="flot.html">Flot Charts</a>
@@ -299,13 +331,13 @@
                         <!-- second-level-items -->
                     </li>
                      <li>
-                        <a href="timeline.html"><i class="fa fa-flask fa-fw"></i>Timeline</a>
+                        <a href="timeline.html"><i class="fa fa-flask fa-fw"></i>Linha do tempo</a>
                     </li>
                     <li>
-                        <a href="tables.html"><i class="fa fa-table fa-fw"></i>Tables</a>
+                        <a href="tables.html"><i class="fa fa-table fa-fw"></i>tabelas</a>
                     </li>
                     <li>
-                        <a href="forms.html"><i class="fa fa-edit fa-fw"></i>Forms</a>
+                        <a href="forms.html"><i class="fa fa-edit fa-fw"></i>formularios</a>
                     </li>
                     <li>
                         <a href="#"><i class="fa fa-wrench fa-fw"></i>UI Elements<span class="fa arrow"></span></a>
@@ -382,7 +414,7 @@
             <div class="row">
                 <!-- Page Header -->
                 <div class="col-lg-12">
-                    <h1 class="page-header">Dashboard</h1>
+                    <h1 class="page-header">Informações rápidas</h1>
                 </div>
                 <!--End Page Header -->
             </div>
@@ -391,7 +423,8 @@
                 <!-- Welcome -->
                 <div class="col-lg-12">
                     <div class="alert alert-info">
-                        <i class="fa fa-folder-open"></i><b>&nbsp;Hello ! </b>Welcome Back <b>Jonny Deen </b>
+                        <i class="fa fa-folder-open "></i>
+                        <b>&nbsp;Olá ! </b>Bem vindo de volta <b id="UserName"> Nome Usuario </b>
  <i class="fa  fa-pencil"></i><b>&nbsp;2,000 </b>Support Tickets Pending to Answere. nbsp;
                     </div>
                 </div>
@@ -552,7 +585,8 @@
                     <div class="panel panel-primary text-center no-boder">
                         <div class="panel-body yellow">
                             <i class="fa fa-bar-chart-o fa-3x"></i>
-                            <h3>20,741 </h3>
+                            <h4> Vendas Totais </h4>
+                            <h3 id="TotalVendas"> R$0,00 </h3>
                         </div>
                         <div class="panel-footer">
                             <span class="panel-eyecandy-title">Daily User Visits
