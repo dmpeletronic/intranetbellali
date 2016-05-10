@@ -46,7 +46,10 @@
                 } 
                 if(data.Produtos.elements[i].Codigo==data.PastasConsignadas.elements[j].ModeloP7) {
                   data.Produtos.elements[i].SaldoEstoque -= data.PastasConsignadas.elements[j].QuantidadeP7;
-                } 
+                }
+                if(data.Produtos.elements[i].Codigo==data.PastasConsignadas.elements[j].ModeloP8) {
+                  data.Produtos.elements[i].SaldoEstoque -= data.PastasConsignadas.elements[j].QuantidadeP8;
+                }
               }
               for(j=0; j<data.RetornoGarantia.elements.length; j++) {
                 if(data.Produtos.elements[i].Codigo==data.RetornoGarantia.elements[j].Codigo) {

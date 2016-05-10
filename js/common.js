@@ -120,11 +120,97 @@ var totalEmEstoque = function (data) {
   return total.toFixed(2);
 };
 
-totalComissoes = function (data) {
+var totalComissoes = function (data) {
   var total = 0;
   for(var i=0; i< data.Vendas.elements.length; i++) {           
     var valor = converteMoedaFloat(data.Vendas.elements[i].Comissao);
     total += valor;
   }
   return total.toFixed(2);
+};
+
+var totalVendaPasta = function (data, pasta) {
+  var propModelo = "ModeloP"+(pasta);
+  var propQtde = "QuantidadeP"+(pasta);
+  var total=0;
+  for(var i=0; i<data.PastasConsignadas.elements.length; i++) {
+    var linha = data.PastasConsignadas.elements[i];
+    if(linha[propModelo] === "" ) {
+      break;
+    }
+    var produto = buscaProduto(data.Produtos, linha[propModelo]);
+    if (produto==null) {
+      break;
+    }
+    var qtde = parseInt(linha[propQtde]);
+    total += qtde*converteMoedaFloat(produto.PrecoVenda);
+  }
+  return total.toFixed(2);
+};
+
+var totalCustoPasta = function (data, pasta) {
+  var propModelo = "ModeloP"+(pasta);
+  var propQtde = "QuantidadeP"+(pasta);
+  var total=0;
+  for(var i=0; i<data.PastasConsignadas.elements.length; i++) {
+    var linha = data.PastasConsignadas.elements[i];
+    if(linha[propModelo] === "" ) {
+      break;
+    }
+    var produto = buscaProduto(data.Compras, linha[propModelo]);
+    if (produto==null) {
+      break;
+    }
+    var qtde = parseInt(linha[propQtde]);
+    total += qtde*converteMoedaFloat(produto.ValorPago);
+  }
+  return total.toFixed(2);
+};
+
+var totalItensPasta = function (data, pasta) {
+  var total=0;
+  for(var i=0; i<data.PastasConsignadas.elements.length;i++) {
+    var linha = data.PastasConsignadas.elements[i];
+    var prop = "QuantidadeP"+(pasta);
+    if(linha[prop] === "" ) {
+      break;
+    }
+    total += parseInt(linha[prop]);
+  }
+  return total;
+};
+
+var totalDePastas = function (data) {
+  var total = data.PastasConsignadas.column_names.length/2;
+  return total;
+};
+
+var buscaProprietarioPasta = function (data, pasta) {
+  for(var i=0; i<data.Revendedores.elements.length; i++) {
+    if( (data.Revendedores.elements[i].PrimeiraPasta == pasta) ||
+        (data.Revendedores.elements[i].SegundaPasta == pasta) ||
+        (data.Revendedores.elements[i].Terceira == pasta)) {
+        return data.Revendedores.elements[i].Nome;
+    }
+  }
+  return "Proprietario nao encontrado";
+};
+
+var tabelaPastas = function(data) {
+  var html = "";
+  var total_pastas = totalDePastas(data);
+  for(var pasta=1; pasta<=total_pastas; pasta++) {
+    var owner = buscaProprietarioPasta(data, pasta);
+    var itens = totalItensPasta(data, pasta);
+    var custo = totalCustoPasta(data, pasta);
+    var venda = totalVendaPasta(data, pasta);
+    html += "<tr>\n\
+                  <td> "+pasta+" </td>\n\
+                  <td> "+owner+" </td>\n\
+                  <td> "+itens+"</td>\n\
+                  <td> R$"+custo+"</td>\n\
+                  <td> R$"+venda+"</td>\n\
+             </tr> \n";
+  }
+  return html;
 };
