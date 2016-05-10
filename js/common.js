@@ -110,7 +110,7 @@ var totalCustoMercadoriaVendida = function (data) {
   return cmv.toFixed(2);
 };
 
-var totalEmEstoque = function (data) {
+var totalEmEstoqueParaVendas = function (data) {
   var total = 0;
   for(var i=0; i < data.Produtos.elements.length; i++) {
     var qtde = parseInt(data.Produtos.elements[i].SaldoEstoque);
@@ -118,6 +118,15 @@ var totalEmEstoque = function (data) {
     total += qtde*prc_unit;
   }
   return total.toFixed(2);
+};
+
+var totalEmEstoqueItens = function (data) {
+  var total = 0;
+  for(var i=0; i < data.Produtos.elements.length; i++) {
+    var qtde = parseInt(data.Produtos.elements[i].SaldoEstoque);
+    total += qtde;
+  }
+  return total;
 };
 
 var totalComissoes = function (data) {
@@ -214,3 +223,4 @@ var tabelaPastas = function(data) {
   }
   return html;
 };
+

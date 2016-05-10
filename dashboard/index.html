@@ -28,13 +28,14 @@
 
       function showInfo(data) {
         var total_valor = totalVendas(data);
-        var total_estoque = totalEmEstoque(data);
+        var total_estoque = totalEmEstoqueParaVendas(data);
+        var total_itens_em_estoque = totalEmEstoqueItens(data);
         var total_cmv = totalCustoMercadoriaVendida(data);
         var total_comissoes = totalComissoes(data);
         var lucro_bruto = totalVendas(data) - totalCustoMercadoriaVendida(data) - totalComissoes(data);
 	    document.getElementById('TotalVendas').innerHTML = "R$"+total_valor;
         document.getElementById('TotalCmv').innerHTML = "R$"+total_cmv;
-        document.getElementById('TotalEstoque').innerHTML = "R$"+total_estoque;
+        document.getElementById('TotalEstoque').innerHTML = total_itens_em_estoque+" itens/R$"+total_estoque;
         document.getElementById('TotalComissoes').innerHTML = "R$"+total_comissoes;
         document.getElementById('LucroBruto').innerHTML = "R$"+lucro_bruto.toFixed(2);
         document.getElementById('TabelaDePastas').innerHTML = tabelaPastas(data);
@@ -515,38 +516,20 @@
                     </div>
                     <!--End simple table example -->
 
-                    <!--Area chart example -->
+                    <!-- Donut Example-->
                     <div class="panel panel-primary">
                         <div class="panel-heading">
-                            <i class="fa fa-bar-chart-o fa-fw"></i>Area Chart Example
-                            <div class="pull-right">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                                        Actions
-                                        <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu pull-right" role="menu">
-                                        <li><a href="#">Action</a>
-                                        </li>
-                                        <li><a href="#">Another action</a>
-                                        </li>
-                                        <li><a href="#">Something else here</a>
-                                        </li>
-                                        <li class="divider"></li>
-                                        <li><a href="#">Separated link</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
+                            <i class="fa fa-bar-chart-o fa-fw"></i>Porcentagem de posse de mercadorias
                         </div>
-
                         <div class="panel-body">
-                            <div id="morris-area-chart"></div>
+                            <div id="morris-donut-chart"></div>
+                            <a href="#" class="btn btn-default btn-block">View Details</a>
                         </div>
 
                     </div>
-                    <!--End area chart example -->
-
+                    <!--End Donut Example-->
+                    
+                    
                 </div>
 
                 <div class="col-lg-4">
@@ -661,18 +644,38 @@
                     <!--End Notifications-->
                 </div>
                 <div class="col-lg-4">
-                    <!-- Donut Example-->
+                    <!--Area chart example -->
                     <div class="panel panel-primary">
                         <div class="panel-heading">
-                            <i class="fa fa-bar-chart-o fa-fw"></i>Donut Chart Example
+                            <i class="fa fa-bar-chart-o fa-fw"></i>Area Chart Example
+                            <div class="pull-right">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                                        Actions
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu pull-right" role="menu">
+                                        <li><a href="#">Action</a>
+                                        </li>
+                                        <li><a href="#">Another action</a>
+                                        </li>
+                                        <li><a href="#">Something else here</a>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li><a href="#">Separated link</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
+
                         <div class="panel-body">
-                            <div id="morris-donut-chart"></div>
-                            <a href="#" class="btn btn-default btn-block">View Details</a>
+                            <div id="morris-area-chart"></div>
                         </div>
 
                     </div>
-                    <!--End Donut Example-->
+                    <!--End area chart example -->                
+                  
                 </div>
                 <div class="col-lg-4">
                     <!-- Chat Panel Example-->
