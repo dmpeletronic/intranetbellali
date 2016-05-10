@@ -14,12 +14,12 @@
     <link href="assets/plugins/morris/morris-0.4.3.min.css" rel="stylesheet" />
     <!-- CORE TO GET DATA-->
     <script type="text/javascript" src="../js/tabletop/src/tabletop.js"></script>
-    <script type="text/javascript" src="../js/common.js"></script>  
+    <script type="text/javascript" src="../js/common.js"></script>
     <script type="text/javascript">
-      window.onload = function() { 
+      window.onload = function() {
         init();
       };
-   
+
       function init() {
         Tabletop.init( { key: getDBLink(),
                          callback: showInfo,
@@ -39,9 +39,10 @@
         document.getElementById('TotalComissoes').innerHTML = "R$"+total_comissoes;
         document.getElementById('LucroBruto').innerHTML = "R$"+lucro_bruto.toFixed(2);
         document.getElementById('TabelaDePastas').innerHTML = tabelaPastas(data);
+        document.getElementById('TabelaRevendedores').innerHTML = tabelaRevendedores(data);
       }
 
-     
+
     </script>
    </head>
 <body>
@@ -436,7 +437,7 @@
                 <div class="col-lg-3">
                   <div class="alert alert-success text-center">
                         <i class="fa  fa-money fa-3x"></i>&nbsp;<b id="TotalVendas"> R$0,00 </b>
-                        em vendas 
+                        em vendas
                   </div>
                 </div>
                 <div class="col-lg-3">
@@ -516,6 +517,57 @@
                     </div>
                     <!--End simple table example -->
 
+                    <!--Simple table example -->
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <i class="fa fa-bar-chart-o fa-fw"></i>Tabela de revendedores
+                            <div class="pull-right">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                                        Actions
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu pull-right" role="menu">
+                                        <li><a href="#">Action</a>
+                                        </li>
+                                        <li><a href="#">Another action</a>
+                                        </li>
+                                        <li><a href="#">Something else here</a>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li><a href="#">Separated link</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-hover table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Revendedor</th>
+                                                    <th>Comissao total</th>
+                                                    <th>Venda total</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="TabelaRevendedores">
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <!-- /.row -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!--End simple table example -->
+
                     <!-- Donut Example-->
                     <div class="panel panel-primary">
                         <div class="panel-heading">
@@ -528,8 +580,8 @@
 
                     </div>
                     <!--End Donut Example-->
-                    
-                    
+
+
                 </div>
 
                 <div class="col-lg-4">
@@ -674,8 +726,8 @@
                         </div>
 
                     </div>
-                    <!--End area chart example -->                
-                  
+                    <!--End area chart example -->
+
                 </div>
                 <div class="col-lg-4">
                     <!-- Chat Panel Example-->
@@ -801,7 +853,7 @@
             </div>
 
 
-         
+
 
 
         </div>
