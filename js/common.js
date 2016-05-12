@@ -90,12 +90,31 @@ var boxProduto = function(elements) {
 var totalVendas = function (data) {
   var total_valor = 0;
   for(var i=0; i< data.Vendas.elements.length; i++) {
-    var produto = buscaProduto(data.Produtos, data.Vendas.elements[i].CodigoProduto);
-     if (produto==null) {
-      continue;
-    }
     var valor = converteMoedaFloat(data.Vendas.elements[i].ValorTotal);
     total_valor += valor;
+  }
+  return total_valor.toFixed(2);
+};
+
+var totalVendasVista = function(data) {
+  var total_valor = 0;
+  for(var i=0; i< data.Vendas.elements.length; i++) {
+    if(data.Vendas.elements[i].TipoPagamento === "Vista") {
+      var valor = converteMoedaFloat(data.Vendas.elements[i].ValorTotal);
+      total_valor += valor;
+    }
+  }
+  return total_valor.toFixed(2);
+};
+
+var totalVendasPrazoRecebidos = function(data) {
+  var total_valor = 0;
+  for(var i=0; i< data.Vendas.elements.length; i++) {
+    if((data.Vendas.elements[i].TipoPagamento === "Prazo") &&
+       (data.Vendas.elements[i].DataPagamento !== "")){
+      var valor = converteMoedaFloat(data.Vendas.elements[i].ValorTotal);
+      total_valor += valor;
+    }
   }
   return total_valor.toFixed(2);
 };

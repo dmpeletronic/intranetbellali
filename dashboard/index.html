@@ -33,6 +33,7 @@
         var total_cmv = totalCustoMercadoriaVendida(data);
         var total_comissoes = totalComissoes(data);
         var lucro_bruto = totalVendas(data) - totalCustoMercadoriaVendida(data) - totalComissoes(data);
+        var vendas_recebidas = parseFloat(totalVendasVista(data)) + parseFloat(totalVendasPrazoRecebidos(data));
 	    document.getElementById('TotalVendas').innerHTML = "R$"+total_valor;
         document.getElementById('TotalCmv').innerHTML = "R$"+total_cmv;
         document.getElementById('TotalEstoque').innerHTML = total_itens_em_estoque+" itens/R$"+total_estoque;
@@ -40,6 +41,8 @@
         document.getElementById('LucroBruto').innerHTML = "R$"+lucro_bruto.toFixed(2);
         document.getElementById('TabelaDePastas').innerHTML = tabelaPastas(data);
         document.getElementById('TabelaRevendedores').innerHTML = tabelaRevendedores(data);
+        document.getElementById('VendasRecebidas').innerHTML = "R$"+vendas_recebidas.toFixed(2);
+        
       }
 
 
@@ -598,10 +601,10 @@
                     <div class="panel panel-primary text-center no-boder">
                         <div class="panel-body blue">
                             <i class="fa fa-pencil-square-o fa-3x"></i>
-                            <h3 id="TotalCmv" > R$0,00 </h3>
+                            <h3 id="VendasRecebidas" > R$0,00 </h3>
                         </div>
                         <div class="panel-footer">
-                            <span class="panel-eyecandy-title">A definir
+                            <span class="panel-eyecandy-title">Vendas Recebidas
                             </span>
                         </div>
                     </div>
