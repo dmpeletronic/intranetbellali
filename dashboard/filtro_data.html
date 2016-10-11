@@ -20,6 +20,8 @@
       window.onload = function() {
         init();
       };
+      
+      var database;
 
       function init() {
         Tabletop.init( { key: getDBLink(),
@@ -37,18 +39,29 @@
       }
       
       function Resultado(dataInicial, dataFinal) {
-        alert("Datas: "+dataInicial+" e "+dataFinal);
+
         if(!validaData(dataInicial)) {
           alert("Data inicial invalida. Digite a data no formato Dia/Mês/Ano");
+          return;
         }
         if(!validaData(dataFinal)) {
           alert("Data final invalida. Digite a data no formato Dia/Mês/Ano");
+          return; 
+        }
+        var data_1 = new Date(toDate(dataInicial));
+        var data_2 = new Date(toDate(dataFinal));
+        if (data_1 > data_2) {
+           alert("Data inicial não pode ser maior que a data final");
+           return;
         }
         
+        var total_valor = totalVendasData(database, dataInicial, dataFinal);
+        document.getElementById('TotalVendasRecebidas').innerHTML = "R$"+total_valor;
       }
       
       function showInfo(data) {
         document.getElementById('dataAtual').innerHTML = retornaData (); 
+        database=data;
       }
       
       
@@ -193,6 +206,10 @@
                                         <div class="form-group">
                                             <label>Lucro bruto</label>
                                             <p class="form-control-static" id="LucroBruto">R$0,00</p>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Tabela de vendas e comissoes por vendedora</label>
+                                            <p class="form-control-static" id="Tabela">R$0,00</p>
                                         </div>
                                 </div>
                             </div>

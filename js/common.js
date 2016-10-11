@@ -96,6 +96,27 @@ var totalVendas = function (data) {
   return total_valor.toFixed(2);
 };
 
+var toDate = function (dateStr) { 
+    var parts = dateStr.split("/");
+    return new Date(parts[2], parts[1] - 1, parts[0]);
+}
+
+var totalVendasData = function (data, startDate, endDate) {
+  var total_valor = 0;
+  dataInicial = new Date(toDate(startDate));
+  dataFinal = new Date(toDate(endDate));
+  for(var i=0; i< data.Vendas.elements.length; i++) {
+    var dataVenda = toDate(data.Vendas.elements[i].DataVenda);
+    var dataOperacao = new Date( dataVenda );
+    recebido = data.Vendas.elements[i].TipoPagamento;
+    if(dataOperacao >= dataInicial && dataOperacao <= dataFinal && recebido == "Vista") {
+      var valor = converteMoedaFloat(data.Vendas.elements[i].ValorTotal);
+      total_valor += valor;
+    }
+  }
+  return total_valor.toFixed(2);
+};
+
 var totalVendasVista = function(data) {
   var total_valor = 0;
   for(var i=0; i< data.Vendas.elements.length; i++) {
