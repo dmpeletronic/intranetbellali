@@ -1,4 +1,4 @@
-/* 
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -8,7 +8,7 @@ var getDBLink = function () {
     return public_spreadsheet_url;
 };
 
-function converteMoedaFloat(valor){ 
+function converteMoedaFloat(valor){
   if(valor === ""){
     valor =  0;
   }else{
@@ -26,18 +26,18 @@ var buscaProduto = function (data, codigo) {
   for(i=0; i<data.elements.length; i++) {
     if(codigo==data.elements[i].Codigo) {
     break;
-    } 
+    }
   }
   if(i==data.elements.length) {
     return null;
-  } 
+  }
   return data.elements[i];
 };
 
 var boxProdutoSimples = function(elements) {
     var div = "<div class='produto' style='width:320;'>";
     var _div = "</div>";
-    var link = "<a href="+elements.CaminhoImagem+" target=blank>"; 
+    var link = "<a href="+elements.CaminhoImagem+" target=blank>";
     var _link = "</a>";
     var img = "<img src='"+ elements.CaminhoImagem +
             "' width='320' height='240' alt='"+elements.Codigo+
@@ -52,7 +52,7 @@ var boxProduto = function(elements) {
     var _div = "</div>";
     var table = "<table  border=1 width=500> <tbody>";
     var _table = "</tbody> </table>";
-    var link = "<a href="+elements.CaminhoImagem+" target=blank>"; 
+    var link = "<a href="+elements.CaminhoImagem+" target=blank>";
     var _link = "</a>";
     var row = "<tr>";
     var _row = "</tr>";
@@ -66,7 +66,7 @@ var boxProduto = function(elements) {
             " Saldo:"+elements.SaldoEstoque+
             " Preco:"+elements.PrecoVenda+"'>";
     var html = div + table +
-            row + 
+            row +
               col1 + link + img + _link + _col +
               col2 + "Codigo:" + _col +
               col + elements.Codigo + _col +
@@ -84,18 +84,37 @@ var boxProduto = function(elements) {
             col + elements.Descricao + _col+
             _row +
             _table + _div;
-    return html;    
+    return html;
 };
 
 var totalVendas = function (data) {
   var total_valor = 0;
   for(var i=0; i< data.Vendas.elements.length; i++) {
-    var produto = buscaProduto(data.Produtos, data.Vendas.elements[i].CodigoProduto);
-     if (produto==null) {
-      continue;
-    }            
     var valor = converteMoedaFloat(data.Vendas.elements[i].ValorTotal);
     total_valor += valor;
+  }
+  return total_valor.toFixed(2);
+};
+
+var totalVendasVista = function(data) {
+  var total_valor = 0;
+  for(var i=0; i< data.Vendas.elements.length; i++) {
+    if(data.Vendas.elements[i].TipoPagamento === "Vista") {
+      var valor = converteMoedaFloat(data.Vendas.elements[i].ValorTotal);
+      total_valor += valor;
+    }
+  }
+  return total_valor.toFixed(2);
+};
+
+var totalVendasPrazoRecebidos = function(data) {
+  var total_valor = 0;
+  for(var i=0; i< data.Vendas.elements.length; i++) {
+    if((data.Vendas.elements[i].TipoPagamento === "Prazo") &&
+       (data.Vendas.elements[i].DataPagamento !== "")){
+      var valor = converteMoedaFloat(data.Vendas.elements[i].ValorTotal);
+      total_valor += valor;
+    }
   }
   return total_valor.toFixed(2);
 };
@@ -131,7 +150,7 @@ var totalEmEstoqueItens = function (data) {
 
 var totalComissoes = function (data) {
   var total = 0;
-  for(var i=0; i< data.Vendas.elements.length; i++) {           
+  for(var i=0; i< data.Vendas.elements.length; i++) {
     var valor = converteMoedaFloat(data.Vendas.elements[i].Comissao);
     total += valor;
   }
@@ -194,6 +213,31 @@ var totalDePastas = function (data) {
   return total;
 };
 
+var totalDeRevendedores = function (data) {
+  var total = data.Revendedores.elements.length;
+  return total;
+}
+
+var totalVendasPorRevendedor = function (data, vendedor) {
+  var total = 0;
+  for(var i=0; i<data.Vendas.elements.length; i++) {
+    if(data.Vendas.elements[i].Vendedor === vendedor) {
+      total += converteMoedaFloat(data.Vendas.elements[i].ValorTotal);
+    }
+  }
+  return total.toFixed(2);
+}
+
+var totalComissaoPorRevendedor = function (data, vendedor) {
+  var total = 0;
+  for(var i=0; i<data.Vendas.elements.length; i++) {
+    if(data.Vendas.elements[i].Vendedor === vendedor) {
+      total += converteMoedaFloat(data.Vendas.elements[i].Comissao);
+    }
+  }
+  return total.toFixed(2);
+}
+
 var buscaProprietarioPasta = function (data, pasta) {
   for(var i=0; i<data.Revendedores.elements.length; i++) {
     if( (data.Revendedores.elements[i].PrimeiraPasta == pasta) ||
@@ -224,3 +268,18 @@ var tabelaPastas = function(data) {
   return html;
 };
 
+var tabelaRevendedores = function(data) {
+  var html = "";
+  var total_revendedores = totalDeRevendedores(data);
+  for(var i=0; i<total_revendedores; i++) {
+    var vendedor = data.Revendedores.elements[i].Nome;
+    var comissao = totalComissaoPorRevendedor(data, vendedor);
+    var venda = totalVendasPorRevendedor(data, vendedor);
+    html += "<tr>\n\
+                  <td> "+vendedor+" </td>\n\
+                  <td> "+comissao+"</td>\n\
+                  <td> R$"+venda+"</td>\n\
+             </tr> \n";
+  }
+  return html;
+};
