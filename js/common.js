@@ -283,3 +283,43 @@ var tabelaRevendedores = function(data) {
   }
   return html;
 };
+
+var retornaData = function () {
+  dayName = new Array ("domingo", "segunda", "terça", "quarta", "quinta", "sexta", "sábado");
+  monName = new Array ("janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro");
+  now = new Date;
+  return  "Hoje é " + dayName[now.getDay() ] + ", " + now.getDate () + " de " + monName [now.getMonth() ]   +  " de "  + now.getFullYear () + ".";
+}
+
+var validaData = function(date) {
+  var patternData = /^[0-9]{2}\/[0-9]{2}\/[0-9]{4}$/;
+  if(!patternData.test(date)){
+    return false;
+  }
+  data = date.replace(/[^0-9\/]/g, "");
+  var partes = data.split("/");
+  if( partes.length !== 3 ) return false;
+  var dia = parseInt(partes[0]);
+  var mes = parseInt(partes[1]);
+  var ano = parseInt(partes[2]);
+  now = new Date;
+
+  if( isNaN(dia) || isNaN(mes) || isNaN(ano) ) return false;
+  if( mes > 12 ) return false;
+  if( mes < 1  ) return false;
+  if( ano < 2016 ) return false;
+  if( ano > now.getFullYear()) return false;
+  if( dia < 1 )  return false;
+  
+  if( mes === 2 ) {
+     maiorDia = ( ( (!(ano % 4)) && (ano % 100) ) || (!(ano % 400)) )? 29: 28;
+     if( dia > maiorDia ) return false;
+  }else {
+     if( mes === 4 || mes === 6 || mes === 9 || mes === 11 ) {
+        if( dia > 30 ) return false;
+      }else {
+        if( dia > 31 ) return false;
+      }
+  }
+  return true;
+}
