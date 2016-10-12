@@ -71,7 +71,7 @@
         document.getElementById('TotalVendasRecebidas').innerHTML = "R$"+total_valor;
         document.getElementById('TotalCmv').innerHTML = "R$"+total_cmv;
         document.getElementById('TotalComissoes').innerHTML = "R$"+total_comissoes;
-        document.getElementById('LucroBruto').innerHTML = "R$"+lucro_bruto;
+        document.getElementById('LucroBruto').innerHTML = "R$"+lucro_bruto.toFixed(2);
         
         document.getElementById('TabelaRevendedores').innerHTML = tabelaRevendedoresData(database, dataInicial, dataFinal);
         
