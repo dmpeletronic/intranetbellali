@@ -117,6 +117,39 @@ var totalVendasData = function (data, startDate, endDate) {
   return total_valor.toFixed(2);
 };
 
+var totalCustoMercadoriaVendidaData = function (data, startDate, endDate) {
+  var cmv = 0;
+  dataInicial = new Date(toDate(startDate));
+  dataFinal = new Date(toDate(endDate));
+  for(var i=0; i< data.Vendas.elements.length; i++) {
+    var dataVenda = toDate(data.Vendas.elements[i].DataVenda);
+    var dataOperacao = new Date( dataVenda );
+    recebido = data.Vendas.elements[i].TipoPagamento;
+    if(dataOperacao >= dataInicial && dataOperacao <= dataFinal && recebido == "Vista") {
+     var produto = buscaProduto(data.Compras, data.Vendas.elements[i].CodigoProduto);
+     var qtde = parseInt(data.Vendas.elements[i].Quantidade);
+     cmv += qtde*converteMoedaFloat(produto.ValorPago);
+   }
+  }
+  return cmv.toFixed(2);
+};
+
+var totalComissoesData = function (data, startDate, endDate) {
+  var total = 0;
+  dataInicial = new Date(toDate(startDate));
+  dataFinal = new Date(toDate(endDate));
+  for(var i=0; i< data.Vendas.elements.length; i++) {
+    var dataVenda = toDate(data.Vendas.elements[i].DataVenda);
+    var dataOperacao = new Date( dataVenda );
+    recebido = data.Vendas.elements[i].TipoPagamento;
+    if(dataOperacao >= dataInicial && dataOperacao <= dataFinal && recebido == "Vista") {
+      var valor = converteMoedaFloat(data.Vendas.elements[i].Comissao);
+      total += valor;
+    }
+  }
+  return total.toFixed(2);
+};
+
 var totalVendasVista = function(data) {
   var total_valor = 0;
   for(var i=0; i< data.Vendas.elements.length; i++) {
@@ -249,6 +282,40 @@ var totalVendasPorRevendedor = function (data, vendedor) {
   return total.toFixed(2);
 }
 
+var totalVendasPorRevendedorData = function (data, vendedor, startDate, endDate) {
+  var total = 0;
+  dataInicial = new Date(toDate(startDate));
+  dataFinal = new Date(toDate(endDate));
+  for(var i=0; i<data.Vendas.elements.length; i++) {
+    var dataVenda = toDate(data.Vendas.elements[i].DataVenda);
+    var dataOperacao = new Date( dataVenda );
+    recebido = data.Vendas.elements[i].TipoPagamento;
+    if(dataOperacao >= dataInicial && dataOperacao <= dataFinal && recebido == "Vista") {
+      if(data.Vendas.elements[i].Vendedor === vendedor) {
+        total += converteMoedaFloat(data.Vendas.elements[i].ValorTotal);
+      }
+    }
+  }
+  return total.toFixed(2);
+}
+
+var totalComissaoPorRevendedorData = function (data, vendedor, startDate, endDate) {
+  var total = 0;
+  dataInicial = new Date(toDate(startDate));
+  dataFinal = new Date(toDate(endDate));
+  for(var i=0; i<data.Vendas.elements.length; i++) {
+    var dataVenda = toDate(data.Vendas.elements[i].DataVenda);
+    var dataOperacao = new Date( dataVenda );
+    recebido = data.Vendas.elements[i].TipoPagamento;
+    if(dataOperacao >= dataInicial && dataOperacao <= dataFinal && recebido == "Vista") {
+      if(data.Vendas.elements[i].Vendedor === vendedor) {
+        total += converteMoedaFloat(data.Vendas.elements[i].Comissao);
+      }
+    }
+  }
+  return total.toFixed(2);
+}
+
 var totalComissaoPorRevendedor = function (data, vendedor) {
   var total = 0;
   for(var i=0; i<data.Vendas.elements.length; i++) {
@@ -305,11 +372,32 @@ var tabelaRevendedores = function(data) {
   return html;
 };
 
+var tabelaRevendedoresData = function(data, startDate, endDate) {
+  var html = "";
+  var total_revendedores = totalDeRevendedores(data);
+  for(var i=0; i<total_revendedores; i++) {
+    var vendedor = data.Revendedores.elements[i].Nome;
+    var comissao = totalComissaoPorRevendedorData(data, vendedor, startDate, endDate);
+    var venda = totalVendasPorRevendedorData(data, vendedor, startDate, endDate);
+    html += "<tr>\n\
+                  <td> "+vendedor+" </td>\n\
+                  <td> "+comissao+"</td>\n\
+                  <td> R$"+venda+"</td>\n\
+             </tr> \n";
+  }
+  return html;
+};
+
 var retornaData = function () {
   dayName = new Array ("domingo", "segunda", "terça", "quarta", "quinta", "sexta", "sábado");
   monName = new Array ("janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro");
   now = new Date;
   return  "Hoje é " + dayName[now.getDay() ] + ", " + now.getDate () + " de " + monName [now.getMonth() ]   +  " de "  + now.getFullYear () + ".";
+}
+
+var hoje = function () {
+  now = new Date;
+  return  ""+now.getDate()+"/"+(now.getMonth()+1)+"/"+now.getFullYear()+"";
 }
 
 var validaData = function(date) {
